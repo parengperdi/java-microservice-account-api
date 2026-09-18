@@ -19,4 +19,12 @@ public class GlobalExceptionHandler {
 		response.setTransactionStatusDescription(message);
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
+
+	@ExceptionHandler(CustomerNotFoundException.class)
+	public ResponseEntity<AccountResponse> handleNotFound(CustomerNotFoundException ex) {
+		AccountResponse response = new AccountResponse();
+		response.setTransactionStatusCode(401);
+		response.setTransactionStatusDescription("Customer not found");
+		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+	}
 }

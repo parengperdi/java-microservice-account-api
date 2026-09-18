@@ -4,6 +4,8 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.metrobank.account.dto.AccountRequest;
 import com.metrobank.account.dto.AccountResponse;
+import com.metrobank.account.dto.CustomerResponse;
 import com.metrobank.account.service.AccountService;
 
 @RestController
@@ -27,5 +30,12 @@ public class AccountController {
 	public ResponseEntity<AccountResponse> create(@Valid @RequestBody AccountRequest request) {
 		AccountResponse response = accountService.create(request);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
+	}
+
+	// spec used 302 found and 401 not found
+	@GetMapping("/{customerNumber}")
+	public ResponseEntity<CustomerResponse> get(@PathVariable Long customerNumber) {
+		CustomerResponse response = accountService.find(customerNumber);
+		return new ResponseEntity<>(response, HttpStatus.FOUND);
 	}
 }
